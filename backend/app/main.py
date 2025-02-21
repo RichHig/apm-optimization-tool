@@ -1,4 +1,4 @@
-
+import os
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from app.endpoints import (
@@ -13,9 +13,11 @@ from app.endpoints import (
 
 app = FastAPI(title="APM Optimization Tool API")
 
+const_frontend_url = os.getenv("FRONTEND_URL")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],
+    allow_origins=[const_frontend_url],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

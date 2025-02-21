@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 
 function FraudDetailsPage() {
@@ -6,24 +6,24 @@ function FraudDetailsPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const fetchFraudDetails = async () => {
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const fetchFraudDetails = useCallback(async () => {
     setLoading(true);
     setError("");
     try {
-      const response = await axios.get(
-        "http://localhost:8000/api/advanced/fraud_details"
-      );
+      const response = await axios.get(`${API_URL}/api/advanced/fraud_details`);
       setFraudData(response.data);
     } catch (err) {
       console.error("Error fetching fraud details:", err);
       setError("Failed to load fraud details. Please try again later.");
     }
     setLoading(false);
-  };
+  }, [API_URL]);
 
   useEffect(() => {
     fetchFraudDetails();
-  }, []);
+  }, [fetchFraudDetails]);
 
   return (
     <div className="container my-4">

@@ -1,5 +1,4 @@
-// frontend/src/components/PaymentSummary.js
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -7,13 +6,15 @@ function PaymentSummary() {
   const [paymentResult, setPaymentResult] = useState(null);
   const [loadingPayment, setLoadingPayment] = useState(false);
 
-  const fetchLatestPayment = async () => {
+  // Get the API URL from the environment variable
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const fetchLatestPayment = useCallback(async () => {
     setLoadingPayment(true);
     try {
-      // For a summary, you might fetch the latest payment from your backend.
-      // Here, we'll simulate it by creating a test charge.
+      // Use the API_URL variable to build the request URL instead of hardcoding localhost
       const response = await axios.post(
-        "http://localhost:8000/api/payment/create_charge",
+        `${API_URL}/api/payment/create_charge`,
         {
           amount: 5000,
           currency: "usd",
@@ -25,12 +26,12 @@ function PaymentSummary() {
       console.error("Error fetching payment summary", error);
     }
     setLoadingPayment(false);
-  };
+  }, [API_URL]);
 
-  // Fetch the latest payment summary when component mounts
-  React.useEffect(() => {
+  // Fetch the latest payment summary when the component mounts
+  useEffect(() => {
     fetchLatestPayment();
-  }, []);
+  }, [fetchLatestPayment]);
 
   return (
     <div className="card mb-4 shadow-sm">

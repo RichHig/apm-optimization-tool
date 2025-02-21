@@ -1,5 +1,5 @@
 // frontend/src/components/PaymentTrendChart.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import {
   LineChart,
@@ -16,38 +16,36 @@ function PaymentTrendChart() {
   const [trendData, setTrendData] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // Get the API URL from environment variables
+  const API_URL = process.env.REACT_APP_API_URL;
+
   // Function to fetch real-time data from the backend API
-  const fetchTrendData = async () => {
+  const fetchTrendData = useCallback(async () => {
     setLoading(true);
     try {
-      // Replace with your actual backend endpoint that returns trend data.
-      // For demonstration, we'll assume it returns an array of objects with `time` and `amount`.
-      const response = await axios.get(
-        "http://localhost:8000/api/payment/trend"
-      );
+      // Use the environment variable to construct the API endpoint URL
+      const response = await axios.get(`${API_URL}/api/payment/trend`);
       setTrendData(response.data);
     } catch (error) {
       console.error("Error fetching payment trend data:", error);
     }
     setLoading(false);
-  };
+  }, [API_URL]);
 
-  // Fetch data once when the component mounts. For real-time updates, you could set up an interval.
+  // Fetch data when component mounts and set up a refresh interval every minute
   useEffect(() => {
     fetchTrendData();
-
-    // Optional: Refresh data every minute (60000 ms)
     const interval = setInterval(() => {
       fetchTrendData();
     }, 60000);
 
-    // Cleanup the interval on unmount
+    // Clean up the interval on unmount
     return () => clearInterval(interval);
-  }, []);
+  }, [fetchTrendData]);
 
   return (
     <div className="border p-4 rounded shadow mt-4">
-      <h2 className="text-xl font-bold mb-2">Payment Trends</h2>
+      <h2 className="fs-4 fw-bold mb-2">Payment Trends</h2>
       {loading ? (
         <p>Loading trend data...</p>
       ) : (

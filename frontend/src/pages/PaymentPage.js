@@ -10,6 +10,8 @@ function PaymentPage() {
   const [loadingPayment, setLoadingPayment] = useState(false);
   const [paymentAmountError, setPaymentAmountError] = useState("");
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const handlePaymentAmountChange = (e) => {
     const value = Number(e.target.value);
     if (value <= 0) {
@@ -30,7 +32,7 @@ function PaymentPage() {
     setLoadingPayment(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/payment/create_charge",
+        `${API_URL}/api/payment/create_charge`,
         {
           amount: paymentAmount,
           currency: paymentCurrency,

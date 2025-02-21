@@ -26,6 +26,9 @@ export function APMDashboard() {
   const [feeOptimizationResult, setFeeOptimizationResult] = useState(null);
   const [loadingFeeOptimization, setLoadingFeeOptimization] = useState(false);
 
+  // Get the API URL from environment variables
+  const API_URL = process.env.REACT_APP_API_URL;
+
   // Validate and update Payment Amount
   const handlePaymentAmountChange = (e) => {
     const value = Number(e.target.value);
@@ -42,7 +45,7 @@ export function APMDashboard() {
     setLoadingRecommendations(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/transactions/recommend",
+        `${API_URL}/api/transactions/recommend`,
         {
           merchant_id: 1,
           location: "US",
@@ -73,7 +76,7 @@ export function APMDashboard() {
     setLoadingPrediction(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/advanced/predict_success",
+        `${API_URL}/api/advanced/predict_success`,
         {
           merchant_id: 1,
           transaction_amount: 120,
@@ -92,7 +95,7 @@ export function APMDashboard() {
     setLoadingFraud(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/advanced/detect_fraud",
+        `${API_URL}/api/advanced/detect_fraud`,
         {
           merchant_id: 1,
           transaction_amount: 120,
@@ -117,7 +120,7 @@ export function APMDashboard() {
     setLoadingPayment(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/payment/create_charge",
+        `${API_URL}/api/payment/create_charge`,
         {
           amount: paymentAmount,
           currency: paymentCurrency,
@@ -136,7 +139,7 @@ export function APMDashboard() {
     setLoadingFeeOptimization(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/advanced/fee_optimization",
+        `${API_URL}/api/advanced/fee_optimization`,
         {
           merchant_id: feeMerchantId,
           transaction_amount: feeTransactionAmount,
@@ -335,13 +338,9 @@ export function APMDashboard() {
             Optimize Fee
           </button>
           {loadingFeeOptimization && <p>Optimizing fee...</p>}
-
-          {/* More Professional Fee Results */}
           {feeOptimizationResult && (
             <div className="mt-4 p-3 border rounded bg-light">
               <h4 className="fw-bold mb-3">Fee Results</h4>
-
-              {/* Display each APM and its fee in a row */}
               {Object.entries(feeOptimizationResult.fee_results).map(
                 ([apm, fee]) => (
                   <div className="row mb-2" key={apm}>
@@ -350,8 +349,6 @@ export function APMDashboard() {
                   </div>
                 )
               )}
-
-              {/* Display the recommended APM */}
               <div className="row mt-3">
                 <div className="col-sm-3 text-muted">Recommended APM:</div>
                 <div className="col-sm-9 fw-semibold">

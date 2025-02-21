@@ -1,5 +1,4 @@
-// frontend/src/components/FeeOptimizationSummary.js
-import React, { useState } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -7,13 +6,15 @@ function FeeOptimizationSummary() {
   const [feeData, setFeeData] = useState(null);
   const [loadingFee, setLoadingFee] = useState(false);
 
-  const fetchFeeSummary = async () => {
+  // Get API URL from environment variables
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const fetchFeeSummary = useCallback(async () => {
     setLoadingFee(true);
     try {
-      // Fetch fee optimization summary data from backend.
-      // For this example, we assume the backend returns fee results and a recommended APM.
+      // Use the API_URL environment variable instead of hardcoding localhost
       const response = await axios.post(
-        "http://localhost:8000/api/advanced/fee_optimization",
+        `${API_URL}/api/advanced/fee_optimization`,
         {
           merchant_id: 1,
           transaction_amount: 150,
@@ -25,11 +26,11 @@ function FeeOptimizationSummary() {
       console.error("Error fetching fee summary", error);
     }
     setLoadingFee(false);
-  };
+  }, [API_URL]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     fetchFeeSummary();
-  }, []);
+  }, [fetchFeeSummary]);
 
   return (
     <div className="card mb-4 shadow-sm">

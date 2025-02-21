@@ -1,5 +1,4 @@
-// frontend/src/components/FraudSummary.js
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import axios from "axios";
 import { Link } from "react-router-dom";
 
@@ -7,12 +6,15 @@ function FraudSummary() {
   const [fraudStatus, setFraudStatus] = useState(null);
   const [loadingFraud, setLoadingFraud] = useState(false);
 
-  const fetchFraudSummary = async () => {
+  // Get the API URL from the environment variable
+  const API_URL = process.env.REACT_APP_API_URL;
+
+  const fetchFraudSummary = useCallback(async () => {
     setLoadingFraud(true);
     try {
-      // For summary, we might do a quick check (like calling /detect_fraud).
+      // Use the API_URL variable instead of hardcoding localhost
       const response = await axios.post(
-        "http://localhost:8000/api/advanced/detect_fraud",
+        `${API_URL}/api/advanced/detect_fraud`,
         {
           merchant_id: 1,
           transaction_amount: 120,
@@ -24,11 +26,11 @@ function FraudSummary() {
       console.error("Error fetching fraud summary", error);
     }
     setLoadingFraud(false);
-  };
+  }, [API_URL]);
 
   useEffect(() => {
     fetchFraudSummary();
-  }, []);
+  }, [fetchFraudSummary]);
 
   return (
     <div className="card mb-4 shadow-sm">

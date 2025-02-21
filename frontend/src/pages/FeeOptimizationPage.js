@@ -9,11 +9,13 @@ function FeeOptimizationPage() {
   const [feeOptimizationResult, setFeeOptimizationResult] = useState(null);
   const [loadingFeeOptimization, setLoadingFeeOptimization] = useState(false);
 
+  const API_URL = process.env.REACT_APP_API_URL;
+
   const optimizeFee = async () => {
     setLoadingFeeOptimization(true);
     try {
       const response = await axios.post(
-        "http://localhost:8000/api/advanced/fee_optimization",
+        `${API_URL}/api/advanced/fee_optimization`,
         {
           merchant_id: feeMerchantId,
           transaction_amount: feeTransactionAmount,
