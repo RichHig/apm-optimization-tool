@@ -5,3 +5,4 @@ pydantic
 stripe
 numpy
 pandas
+scikit-learn
