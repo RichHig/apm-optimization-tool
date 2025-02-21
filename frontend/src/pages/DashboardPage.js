@@ -3,6 +3,7 @@ import React from "react";
 import PaymentSummary from "../components/PaymentSummary";
 import FeeOptimizationSummary from "../components/FeeOptimizationSummary";
 import FraudSummary from "../components/FraudSummary";
+import { APMDashboard } from "../components/APMDashboard";
 
 function DashboardPage() {
   return (
@@ -19,6 +20,7 @@ function DashboardPage() {
           <FraudSummary />
         </div>
       </div>
+      <APMDashboard />
     </div>
   );
 }

@@ -1,6 +1,7 @@
 // frontend/src/App.js
-import React from "react";
+import React, { useEffect } from "react";
 import { Routes, Route, Link } from "react-router-dom";
+import * as bootstrap from "bootstrap/dist/js/bootstrap.bundle.min.js";
 import HomePage from "./pages/HomePage";
 import DashboardPage from "./pages/DashboardPage";
 import PaymentPage from "./pages/PaymentPage";
@@ -9,6 +10,19 @@ import FraudDetailsPage from "./pages/FraudDetailsPage";
 import Footer from "./components/Footer";
 
 function App() {
+  useEffect(() => {
+    const navLinks = document.querySelectorAll(".nav-link");
+    const menuToggle = document.getElementById("navbarSupportedContent");
+    const bsCollapse = bootstrap.Collapse.getOrCreateInstance(menuToggle, {
+      toggle: false,
+    });
+    navLinks.forEach((l) => {
+      l.addEventListener("click", () => {
+        bsCollapse.hide();
+      });
+    });
+  }, []);
+
   return (
     <div className="d-flex flex-column min-vh-100">
       {/* Navbar */}

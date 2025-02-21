@@ -1,5 +1,6 @@
 // frontend/src/pages/HomePage.js
 import React from "react";
+import { Link } from "react-router-dom";
 import { ArrowRight, CreditCard, BarChart2, ShieldCheck } from "lucide-react";
 
 function HomePage() {
@@ -32,15 +33,15 @@ function HomePage() {
             Reduce fees, increase transaction success, and detect fraud in
             real-time.
           </p>
-          <a
-            href="/dashboard"
+          <Link
+            to="/dashboard"
             className="btn btn-light btn-lg rounded-pill fw-semibold d-inline-flex align-items-center"
           >
             View Dashboard
             <span className="ms-2">
               <ArrowRight />
             </span>
-          </a>
+          </Link>
         </div>
         <div
           className="position-absolute bottom-0 start-0 end-0"
